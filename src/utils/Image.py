@@ -5,7 +5,7 @@
 from pygame import *
 
 
-class Imagem(object):
+class Image(object):
     def __init__(self, filename: str, posx: int, posy: int, size: tuple):
         self.filename = filename
         self.posx = posx

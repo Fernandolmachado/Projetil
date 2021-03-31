@@ -5,7 +5,7 @@
 from pygame import *
 
 
-class MinhaSurface(Surface):
+class PositionalSurface(Surface):
     def __init__(self, posx: int, posy: int, color: Color, *args, **kwargs):
         """
         Superficie para criar objetos do jogo

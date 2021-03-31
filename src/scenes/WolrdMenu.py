@@ -4,16 +4,15 @@
 
 import pygame
 
-from classes.cena import Cena
-from classes.janela import Janela
-from classes.config import Config
-from classes.minha_surface import MinhaSurface
-from classes.imagem import Imagem
-from classes.texto import Texto
+from src.scenes.Scene import Scene
+from src.objects.Window import Window
+from src.config import Config
+from src.utils.Image import Image
+from src.utils.Text import Text
 
 
-class MenuMundo(Cena):
-    def __init__(self, display: Janela, config: Config):
+class WorldMenu(Scene):
+    def __init__(self, display: Window, config: Config):
         """
         Executa menu de escolha do mundo.
         :param display: objeto contendo a tela e o clock
@@ -30,19 +29,19 @@ class MenuMundo(Cena):
         )
 
         # Comunicacao
-        self.message = Texto(self.display.get_display(), "Escolha um mundo", "Comic Sans MS", 50,
-            pygame.Color(0, 0, 0), (200, 100))
+        self.message = Text(self.display.get_display(), "Escolha um mundo", "Comic Sans MS", 50,
+                            pygame.Color(0, 0, 0), (200, 100))
 
         # Opcoes de mundo
         self.worlds_available = 4
         self.worlds_box = list()
 
         for i in range(self.worlds_available):
-            self.worlds_box.append(Imagem(config.world_list[i], i * 200 + 25, 225, (150, 150)))
+            self.worlds_box.append(Image(config.world_list[i], i * 200 + 25, 225, (150, 150)))
 
         # Botão Voltar
-        self.back_button = Texto(self.display.get_display(), "Voltar", "Comic Sans MS", 40,
-                                 pygame.Color(0, 0, 0), (50, 500), True)
+        self.back_button = Text(self.display.get_display(), "Voltar", "Comic Sans MS", 40,
+                                pygame.Color(0, 0, 0), (50, 500), True)
 
         # variaveis de controle do mouse
         self.clicked = False
@@ -85,7 +84,7 @@ class MenuMundo(Cena):
                     self.clicked = False
                     self.unclicked = False
 
-                    self.config.cena = self.id_cena + 1
+                    self.config.scene = self.id_cena + 1
                     self.config.world = world
                     self.close()
                 elif self.clicked:
@@ -103,7 +102,7 @@ class MenuMundo(Cena):
                 self.clicked = False
                 self.unclicked = False
 
-                self.config.cena = self.id_cena - 1
+                self.config.scene = self.id_cena - 1
                 self.close()
             elif self.clicked:
                 # efeito de clicar

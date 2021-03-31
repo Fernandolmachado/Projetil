@@ -4,7 +4,8 @@
 
 from pygame import *
 
-class Texto(object):
+
+class Text(object):
     def __init__(self, surface: Surface, text: str, font: str, size: int, color: Color, pos: tuple, button=False):
         self.surface = surface
         self.text = text
@@ -12,8 +13,11 @@ class Texto(object):
         self.size = size
         self.color = color
         self.pos = pos
+        self.text_center = None
         self.button = button
         self.render()
+
+        self.set_center()
 
     def get_position(self) -> tuple:
         return self.pos
@@ -39,23 +43,34 @@ class Texto(object):
                 -1
             )
 
+        self.pos = (
+            self.text_center[0] - self.text_surface.get_rect().width // 2,
+            self.text_center[1] - self.text_surface.get_rect().height // 2
+        )
+
         self.surface.blit(self.text_surface, self.pos)
+
+    def set_center(self):
+        self.text_center = (
+            self.pos[0] + self.text_surface.get_rect().centerx,
+            self.pos[1] + self.text_surface.get_rect().centery
+        )
 
     def center_x(self):
         self.pos = (
             self.surface.get_width() / 2 - self.text_surface.get_width() / 2,
             self.pos[1]
         )
-
         self.render()
+        self.set_center()
 
     def center_y(self):
         self.pos = (
             self.pos[0],
             self.surface.get_height() / 2 - self.text_surface.get_height() / 2
         )
-
         self.render()
+        self.set_center()
 
     def set_size(self, size: int):
         self.size = size
@@ -79,5 +94,4 @@ class Texto(object):
             rect = self.text_surface.get_rect()
             rect.x += self.pos[0]
             rect.y += self.pos[1]
-
             return rect

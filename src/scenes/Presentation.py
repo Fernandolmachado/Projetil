@@ -4,13 +4,13 @@
 
 import pygame
 
-from classes.cena import Cena
-from classes.janela import Janela
-from classes.config import Config
+from src.scenes.Scene import Scene
+from src.objects.Window import Window
+from src.config import Config
 
 
-class Apresentacao(Cena):
-    def __init__(self, display: Janela, config: Config):
+class Presentation(Scene):
+    def __init__(self, display: Window, config: Config):
         """
         Executa video de apresentacao do jogo.
         :param display: objeto contendo a tela
@@ -48,4 +48,4 @@ class Apresentacao(Cena):
 
     def on_close(self):
         if self.config.running:
-            self.config.cena = self.id_cena + 1
+            self.config.scene = self.id_cena + 1

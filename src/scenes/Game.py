@@ -4,13 +4,13 @@
 
 import pygame
 
-from classes.janela import Janela
-from classes.config import Config
-from classes.cena import Cena
+from src.objects.Window import Window
+from src.config import Config
+from src.scenes.Scene import Scene
 
 
-class Jogo(Cena):
-    def __init__(self, display: Janela, config: Config):
+class Game(Scene):
+    def __init__(self, display: Window, config: Config):
         """
         Executa do jogo.
         :param display: objeto contendo a tela e o clock

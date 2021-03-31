@@ -4,12 +4,12 @@
 
 import pygame
 
-from classes.janela import Janela
-from classes.config import Config
+from src.objects.Window import Window
+from src.config import Config
 
 
-class Cena(object):
-    def __init__(self, display: Janela, config: Config):
+class Scene(object):
+    def __init__(self, display: Window, config: Config):
         """
         Executa video de apresentacao do jogo.
         :param display: objeto contendo a tela

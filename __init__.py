@@ -1,3 +1,3 @@
-from classes import App
+from src import App
 
-App.executar()
+App.run()

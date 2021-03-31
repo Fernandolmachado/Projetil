@@ -5,7 +5,7 @@
 import pygame
 
 
-class Janela(object):
+class Window(object):
     def __init__(self):
         """
         Cria janela do jogo e define o fps.
