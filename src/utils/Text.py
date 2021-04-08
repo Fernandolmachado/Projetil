@@ -19,6 +19,12 @@ class Text(object):
 
         self.set_center()
 
+    def get_text(self) -> str:
+        return self.text
+
+    def set_text(self, text: str):
+        self.text = text
+
     def get_position(self) -> tuple:
         return self.pos
 
