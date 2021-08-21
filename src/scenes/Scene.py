@@ -4,8 +4,8 @@
 
 import pygame
 
-from src.objects.Window import Window
 from src.config import Config
+from src.objects.Window import Window
 
 
 class Scene(object):

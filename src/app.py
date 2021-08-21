@@ -4,16 +4,16 @@
 
 import pygame
 
-from src.objects.Window import Window
 from src.config import Config
+from src.objects.Window import Window
 from src.scenes.Presentation import Presentation
 from src.scenes.MainMenu import MainMenu
 from src.scenes.PlayerMenu import PlayerMenu
+from src.scenes.WorldMenu import WorldMenu
 from src.scenes.Game import Game
 
 
 class App(object):
-
     test = True
 
     @staticmethod
@@ -43,6 +43,8 @@ class App(object):
             elif config.scene == 2:
                 PlayerMenu(display, config).run()
             elif config.scene == 3:
+                WorldMenu(display, config).run()
+            elif config.scene == 4:
                 Game(display, config).run()
             else:
                 raise ValueError()

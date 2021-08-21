@@ -25,7 +25,6 @@ class Button(object):
         self.rect = self.text_surface.get_rect()
 
     def blit(self):
-
         pos = (
             self.center[0] - self.text_surface.get_rect().width // 2,
             self.center[1] - self.text_surface.get_rect().height // 2
@@ -47,6 +46,7 @@ class Button(object):
 
     def get_surface(self) -> Surface:
         return self.surface
+
     # Getters e Setters
 
     def set_surface(self, surface: Surface):

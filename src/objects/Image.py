@@ -21,7 +21,7 @@ class Image(object):
 
     def get_image(self) -> Surface:
         return self.image
-    
+
     def on_hover(self):
         self.scale(self.width * 1.1, self.height * 1.1)
 

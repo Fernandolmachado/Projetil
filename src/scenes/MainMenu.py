@@ -4,11 +4,11 @@
 
 import pygame
 
-from src.scenes.Scene import Scene
-from src.objects.Window import Window
 from src.config import Config
-from src.utils.Text import Text
-from src.utils.PositionalSurface import PositionalSurface
+from src.objects.Window import Window
+from src.scenes.Scene import Scene
+from src.objects.PositionalSurface import PositionalSurface
+from src.objects.Text import Text
 
 
 class MainMenu(Scene):

@@ -4,9 +4,9 @@
 
 import pygame
 
-from src.scenes.Scene import Scene
-from src.objects.Window import Window
 from src.config import Config
+from src.objects.Window import Window
+from src.scenes.Scene import Scene
 
 
 class Presentation(Scene):
@@ -40,10 +40,10 @@ class Presentation(Scene):
         self.display.get_display().blit(self.background_image, (0, 0))
 
         self.times += 1
-        if self.times > 145:                            # Controla transparencia da imagem
+        if self.times > 145:  # Controla transparencia da imagem
             self.alpha -= 2
             self.background_image.set_alpha(self.alpha)
-        if self.times > 300:                            # Finaliza apresentacao
+        if self.times > 300:  # Finaliza apresentacao
             self.close()
 
     def on_close(self):

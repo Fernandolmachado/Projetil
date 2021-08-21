@@ -4,11 +4,11 @@
 
 import pygame
 
-from src.scenes.Scene import Scene
-from src.objects.Window import Window
 from src.config import Config
-from src.utils.Image import Image
-from src.utils.Text import Text
+from src.objects.Window import Window
+from src.scenes.Scene import Scene
+from src.objects.Image import Image
+from src.objects.Text import Text
 
 
 class WorldMenu(Scene):
@@ -19,7 +19,7 @@ class WorldMenu(Scene):
         :param config: objeto contendo as variaveis de controle
         """
         super().__init__(display, config)
-        self.id_cena = 2
+        self.id_cena = 3
 
         # Carrega imagem de fundo
         self.background_image = pygame.image.load("img/menu_background.png").convert_alpha()

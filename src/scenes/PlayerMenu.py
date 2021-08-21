@@ -4,13 +4,13 @@
 
 import pygame
 
-from src.scenes.Scene import Scene
-from src.objects.Window import Window
 from src.config import Config
-from src.utils.Text import Text
-from src.utils.Button import Button
-from src.objects.Player import Player
 from src.objects.ArtificialIntelligence import ArtificialIntelligence
+from src.objects.Player import Player
+from src.objects.Window import Window
+from src.scenes.Scene import Scene
+from src.objects.Button import Button
+from src.objects.Text import Text
 
 
 class PlayerMenu(Scene):
@@ -53,13 +53,23 @@ class PlayerMenu(Scene):
         ]
 
         # Lista de botões de nível de dificuldade (1, 2 ou 3)
+        self.player_level_buttons_label = [
+            Text(self.display.get_display(), "Dificuldade", "Comic Sans MS", 20,
+                 pygame.Color(0, 0, 0), (50, 350)),
+            Text(self.display.get_display(), "Dificuldade", "Comic Sans MS", 20,
+                 pygame.Color(0, 0, 0), (250, 350)),
+            Text(self.display.get_display(), "Dificuldade", "Comic Sans MS", 20,
+                 pygame.Color(0, 0, 0), (450, 350)),
+            Text(self.display.get_display(), "Dificuldade", "Comic Sans MS", 20,
+                 pygame.Color(0, 0, 0), (650, 350))
+        ]
+
         self.player_level_buttons = [
             Button(self.display.get_display(), (100, 400), "1", 30, pygame.Color(0, 0, 0)),
             Button(self.display.get_display(), (300, 400), "1", 30, pygame.Color(0, 0, 0)),
             Button(self.display.get_display(), (500, 400), "1", 30, pygame.Color(0, 0, 0)),
             Button(self.display.get_display(), (700, 400), "1", 30, pygame.Color(0, 0, 0))
         ]
-
 
         # Botão Voltar
         self.back_button = Text(self.display.get_display(), "Voltar", "Comic Sans MS", 40,
@@ -100,6 +110,7 @@ class PlayerMenu(Scene):
 
             self.players_buttons[i].blit()
             if self.players_buttons[i].get_text() == "CPU":
+                self.player_level_buttons_label[i].blit()
                 self.player_level_buttons[i].blit()
 
         # Botões
@@ -108,15 +119,16 @@ class PlayerMenu(Scene):
 
     def on_close(self):
         if self.event == "play":
-            print("aqui")
             for i in range(len(self.players_buttons)):
                 if self.players_buttons[i].get_text() == "CPU":
                     self.config.players.append(
-                        Player(i, ArtificialIntelligence(int(self.player_level_buttons[i].get_text()))))
+                        Player(i + 1, ArtificialIntelligence(int(self.player_level_buttons[i].get_text()))))
                 else:
-                    self.config.players.append(Player(i))
+                    self.config.players.append(Player(i + 1))
 
-            self.config.scene = self.id_cena + 1
+            # Usado quando houver a cena de escolha de mundo
+            # self.config.scene = self.id_cena + 1
+            self.config.scene = self.id_cena + 2
         elif self.event == "back":
             self.config.scene = self.id_cena - 1
 
@@ -161,7 +173,8 @@ class PlayerMenu(Scene):
             else:
                 player_button.on_normal()
 
-            if player_button.get_text() == "CPU" and player_level_button.get_rect().collidepoint(pygame.mouse.get_pos()):
+            if player_button.get_text() == "CPU" and player_level_button.get_rect().collidepoint(
+                    pygame.mouse.get_pos()):
                 if self.clicked:
                     player_level_button.on_click()
                     if player_level_button.get_text() == "1":

@@ -9,6 +9,7 @@ def get_sprites(rectangle):
     image.set_colorkey(colorkey, pygame.RLEACCEL)
     return image
 
+
 # janela
 WIDTH = 800
 HEIGHT = 600
@@ -21,7 +22,6 @@ background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 # FPS
 clock = pygame.time.Clock()
 fps = 60
-
 
 # jogador
 sheet = pygame.image.load("img/player.png").convert()
@@ -57,17 +57,17 @@ while funcionando:
     tecla = pygame.key.get_pressed()
 
     if tecla[pygame.K_RIGHT] and contador >= animacao:
-            contador = 0
-            indice = (indice + 1) % 3
-            player = images_right[indice]
-            posicao[0] += velocidade[0]
-            direcao = 0
+        contador = 0
+        indice = (indice + 1) % 3
+        player = images_right[indice]
+        posicao[0] += velocidade[0]
+        direcao = 0
     elif tecla[pygame.K_LEFT] and contador >= animacao:
-            contador = 0
-            indice = (indice + 1) % 3
-            posicao[0] -= velocidade[0]
-            player = images_left[indice]
-            direcao = 1
+        contador = 0
+        indice = (indice + 1) % 3
+        posicao[0] -= velocidade[0]
+        player = images_left[indice]
+        direcao = 1
     else:
         if contador >= animacao:
             indice = 0
