@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 fps = 60
 
 # jogador
-sheet = pygame.image.load("img/player.png").convert()
+sheet = pygame.image.load("img/player-old.png").convert()
 images_right = [get_sprites([i, 0, 200, sheet.get_height()]) for i in range(0, 600, 200)]
 images_left = [get_sprites([i, 0, 200, sheet.get_height()]) for i in range(600, 1200, 200)]
 
