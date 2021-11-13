@@ -119,6 +119,7 @@ class PlayerMenu(Scene):
 
     def on_close(self):
         if self.event == "play":
+            self.config.players = list()
             for i in range(len(self.players_buttons)):
                 if self.players_buttons[i].get_text() == "CPU":
                     self.config.players.append(

@@ -22,3 +22,6 @@ class Config(object):
         ]
 
         self.players = list()  # lista de objetos de jogadores e/ou IA
+        self.gravity = 1
+        self.RIGHT = 1
+        self.LEFT = -1

@@ -1,7 +1,7 @@
 # Projeto:  Projétil
 # Autor:    Fernando Machado
 # Data:     09/03/2021
-
+import pygame
 from pygame import *
 
 
@@ -18,6 +18,9 @@ class Text(object):
         self.render()
 
         self.set_center()
+
+    def set_color(self, color: Color):
+        self.color = color
 
     def get_text(self) -> str:
         return self.text

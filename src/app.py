@@ -23,7 +23,6 @@ class App(object):
 
         :return: None
         """
-
         # inicializa modulos do pygame
         pygame.init()
 
@@ -37,14 +36,16 @@ class App(object):
         # execucao do jogo
         while config.running:
             if config.scene == 0:
-                Presentation(display, config).run()
+                scene = Presentation(display, config)
             elif config.scene == 1:
-                MainMenu(display, config).run()
+                scene = MainMenu(display, config)
             elif config.scene == 2:
-                PlayerMenu(display, config).run()
+                scene = PlayerMenu(display, config)
             elif config.scene == 3:
-                WorldMenu(display, config).run()
+                scene = WorldMenu(display, config)
             elif config.scene == 4:
-                Game(display, config).run()
+                scene = Game(display, config)
             else:
                 raise ValueError()
+
+            scene.run()
