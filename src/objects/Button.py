@@ -4,6 +4,8 @@
 
 from pygame import *
 
+from src.objects.Sound import Sound
+
 
 class Button(object):
     def __init__(self, surface: Surface, center: tuple, text: str, font_size: int, color: Color):
@@ -13,6 +15,10 @@ class Button(object):
         self.font = "Comic Sans MS"
         self.font_size = font_size
         self.color = color
+
+        self.hover_sound = None
+        self.click_sound = None
+        self.is_hover = False
 
         self.text_surface = None
         self.rect = None
@@ -35,14 +41,25 @@ class Button(object):
 
         self.surface.blit(self.text_surface, pos)
 
+    def set_hover_sound(self, sound: Sound):
+        self.hover_sound = sound
+
+    def set_click_sound(self, sound: Sound):
+        self.click_sound = sound
+
     def on_normal(self):
         self.render(1)
+        self.is_hover = False
 
     def on_click(self):
         self.render(0.75)
+        self.click_sound.play()
 
     def on_hover(self):
         self.render(1.25)
+        if not self.is_hover and self.hover_sound is not None:
+            self.is_hover = True
+            self.hover_sound.play()
 
     def get_surface(self) -> Surface:
         return self.surface

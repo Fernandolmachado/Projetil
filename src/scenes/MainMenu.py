@@ -5,6 +5,7 @@
 import pygame
 
 from src.config import Config
+from src.objects.Sound import Sound
 from src.objects.Window import Window
 from src.scenes.Scene import Scene
 from src.objects.PositionalSurface import PositionalSurface
@@ -44,6 +45,17 @@ class MainMenu(Scene):
         self.event_pos = None
 
         self.event = None
+
+        # sons
+        config.menu_music = Sound(config.sounds["menu_music"])
+
+        self.play_button.set_hover_sound(Sound(config.sounds["cursor"]))
+        self.play_button.set_click_sound(Sound(config.sounds["select"]))
+        self.exit_button.set_hover_sound(Sound(config.sounds["cursor"]))
+        self.exit_button.set_click_sound(Sound(config.sounds["select"]))
+
+        config.menu_music.play(-1)
+        config.menu_music.set_volume(0.7)
 
     def handle_events(self, event):
         # evento de clique com botao esquerdo do mouse

@@ -23,6 +23,12 @@ class App(object):
 
         :return: None
         """
+        # Used to prevent high latency of buffer
+        # (frequency, size, channel, buffer)
+        # channel argument: 1 mono, 2 stereo
+        # buffer: must be a power of 2
+        pygame.mixer.pre_init(22100, -16, 2, 64)
+
         # inicializa modulos do pygame
         pygame.init()
 
@@ -31,7 +37,7 @@ class App(object):
         config = Config()
 
         # teste
-        config.scene = 2
+        config.scene = 1
 
         # execucao do jogo
         while config.running:

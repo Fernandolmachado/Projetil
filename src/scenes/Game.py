@@ -6,6 +6,7 @@ import pygame
 import random
 
 from src.config import Config
+from src.objects.Sound import Sound
 from src.objects.Window import Window
 from src.scenes.Scene import Scene
 from src.objects.Sprite import Sprite
@@ -70,6 +71,21 @@ class Game(Scene):
         # Altera cursor
         pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_NO)
 
+        # Sons
+        self.music = Sound(config.sounds["game_music"])
+        self.start_sound = Sound(config.sounds["start"])
+        self.turn_sound = Sound(config.sounds["turn"])
+        self.shot_sound = Sound(config.sounds["shot"])
+        self.hit_sound = Sound(config.sounds["on_the_tank"])
+        self.ground_sound = Sound(config.sounds["on_the_ground"])
+        self.end_sound = Sound(config.sounds["end"])
+
+        self.timer.set_sound(Sound(config.sounds["timer"]))
+
+        self.music.play(-1)
+        self.music.set_volume(0.5)
+        self.start_sound.play()
+
     def update(self):
         self.movement_events()
 
@@ -81,14 +97,17 @@ class Game(Scene):
             for player in self.players:
                 if player.has_life() and self.bullet.check_impact(player.get_rect()):
                     player.take_damage(self.damage)
+                    self.hit_sound.play()
                     bullet_gone = True
                     break
             if self.bullet.check_impact(self.ground):
                 bullet_gone = True
+                self.ground_sound.play()
             elif self.bullet.get_center()[0] < 0 or self.bullet.get_center()[0] > self.display.get_display().get_width():
                 bullet_gone = True
             if bullet_gone:
                 self.bullet = None
+                self.shot_sound.stop()
 
         # Espera alguns instantes para mudar de turno
         if self.shooting:
@@ -108,12 +127,15 @@ class Game(Scene):
 
         # Verifica fim de jogo
         if not self.shooting and self.players_row.length() == 0:
+            if not self.end_game:
+                self.turn_sound.stop()
+                self.end_game = True
+                self.end_sound.play()
             player_color = self.get_player_color()
             self.message.set_message(player_color + " Venceu!")
-            end_game = True
             self.end_game_counter += 1
 
-            if self.end_game_counter > 100:
+            if self.end_game_counter > 200:
                 self.close()
 
         # limpa jogadores mortos da fila de turnos
@@ -158,6 +180,7 @@ class Game(Scene):
                         self.player_turn.get_force(),
                         self.config.gravity
                     )
+                    self.shot_sound.play()
                 else:
                     keys = pygame.key.get_pressed()
 
@@ -169,7 +192,7 @@ class Game(Scene):
                     self.player_turn.aim_cannon(pygame.mouse.get_pos())
             elif self.players_row.length() > 0:
                 # Caso seja máquina
-                fire = self.player_turn.ai_moving(self.players_row.get_players(), self.timer, self.config)
+                fire = self.player_turn.ai_moving(self.players_row.get_players(), self.timer)
 
                 if fire:
                     self.bullet = Bullet(
@@ -179,6 +202,7 @@ class Game(Scene):
                         self.player_turn.get_force(),
                         self.config.gravity
                     )
+                    self.shot_sound.play()
 
     def handle_players(self):
         for i in range(len(self.players)):
@@ -223,6 +247,7 @@ class Game(Scene):
         player_color = self.get_player_color()
         self.message.set_message("Vez do " + player_color)
         self.timer.reset_over_time()
+        self.turn_sound.play()
 
     def on_close(self):
         self.config.scene = self.id_cena - 2

@@ -7,6 +7,7 @@ import pygame
 from src.config import Config
 from src.objects.ArtificialIntelligence import ArtificialIntelligence
 from src.objects.Player import Player
+from src.objects.Sound import Sound
 from src.objects.Window import Window
 from src.scenes.Scene import Scene
 from src.objects.Button import Button
@@ -85,6 +86,25 @@ class PlayerMenu(Scene):
 
         self.event = None
 
+        # Sons
+        self.cursor_sound = Sound(config.sounds["cursor"])
+        self.select_sound = Sound(config.sounds["select"])
+
+        for i in range(len(self.players_buttons)):
+            player_button = self.players_buttons[i]
+            player_button.set_hover_sound(Sound(config.sounds["cursor"]))
+            player_button.set_click_sound(Sound(config.sounds["select"]))
+
+            level_button = self.player_level_buttons[i]
+            level_button.set_hover_sound(Sound(config.sounds["cursor"]))
+            level_button.set_click_sound(Sound(config.sounds["select"]))
+
+        self.back_button.set_hover_sound(Sound(config.sounds["cursor"]))
+        self.back_button.set_click_sound(Sound(config.sounds["select"]))
+
+        self.play_button.set_hover_sound(Sound(config.sounds["cursor"]))
+        self.play_button.set_click_sound(Sound(config.sounds["select"]))
+
     def handle_events(self, event):
         # evento de clique com botao esquerdo do mouse
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -123,9 +143,9 @@ class PlayerMenu(Scene):
             for i in range(len(self.players_buttons)):
                 if self.players_buttons[i].get_text() == "CPU":
                     self.config.players.append(
-                        Player(i + 1, ArtificialIntelligence(int(self.player_level_buttons[i].get_text()))))
+                        Player(i + 1, self.config, ArtificialIntelligence(int(self.player_level_buttons[i].get_text()))))
                 else:
-                    self.config.players.append(Player(i + 1))
+                    self.config.players.append(Player(i + 1, self.config))
 
             # Usado quando houver a cena de escolha de mundo
             # self.config.scene = self.id_cena + 1
@@ -154,6 +174,7 @@ class PlayerMenu(Scene):
             if self.clicked:
                 self.play_button.on_click()
                 self.event = "play"
+                self.config.menu_music.stop()
                 self.close()
             else:
                 self.play_button.on_hover()

@@ -4,6 +4,8 @@
 import pygame
 from pygame import *
 
+from src.objects.Sound import Sound
+
 
 class Text(object):
     def __init__(self, surface: Surface, text: str, font: str, size: int, color: Color, pos: tuple, button=False):
@@ -14,6 +16,9 @@ class Text(object):
         self.color = color
         self.pos = pos
         self.text_center = None
+        self.is_hover = False
+        self.hover_sound = None
+        self.click_sound = None
         self.button = button
         self.render()
 
@@ -85,14 +90,25 @@ class Text(object):
         self.size = size
         self.render()
 
+    def set_hover_sound(self, sound: Sound):
+        self.hover_sound = sound
+
+    def set_click_sound(self, sound: Sound):
+        self.click_sound = sound
+
     def on_hover(self):
         self.render(1.25)
+        if not self.is_hover and self.hover_sound is not None:
+            self.is_hover = True
+            self.hover_sound.play()
 
     def on_normal(self):
         self.render(1)
+        self.is_hover = False
 
     def on_click(self):
         self.render(0.8)
+        self.click_sound.play()
 
     def get_rect(self, abs=None) -> Rect:
         if abs:

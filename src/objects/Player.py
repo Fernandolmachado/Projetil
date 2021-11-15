@@ -5,12 +5,14 @@ import pygame
 from math import atan, degrees
 
 from src.config import Config
+from src.objects.Sound import Sound
 from src.objects.Timer import Timer
 
 
 class Player(object):
-    def __init__(self, id: int, artificial_intelligence=None):
+    def __init__(self, id: int, config: Config, artificial_intelligence=None):
         self.id = id
+        self.config = config
         self.ai = artificial_intelligence
 
         self.posx = 0
@@ -41,6 +43,13 @@ class Player(object):
 
         self.display_width = 800
 
+        self.is_moving = False
+        self.is_collision = False
+        self.is_aiming = False
+        self.move_sound = Sound(config.sounds["tank"])
+        self.collision_sound = Sound(config.sounds["collision"])
+        self.cannon_aim_sound = Sound(config.sounds["cannon"])
+
     def adjust_cannon_position(self):
         self.cannon_centerx = self.posx + self.tank_images[self.tank_image_sprite].get_width() // 2
         self.cannon_centery = self.posy + 10
@@ -56,25 +65,37 @@ class Player(object):
         # Colisão nas bordas da janela
         if self.posx < 0:
             self.posx = 0
+            self.is_collision = True
         elif self.display_width is not None and (self.posx + self.width) > self.display_width:
             self.posx = self.display_width - self.width
+            self.is_collision = True
 
         # Colisão com players
         for player in players:
             if self.get_rect().colliderect(player.get_rect()):
                 if self.posx < player.get_pos()[0]:
                     self.posx = player.get_pos()[0] - self.width
+                    self.is_collision = True
                 else:
                     self.posx = player.get_pos()[0] + player.get_rect().width
+                    self.is_collision = True
 
-        if self.tank_image_sprite == 0:
-            self.tank_image_sprite = 1
+        if not self.is_collision:
+            if self.tank_image_sprite == 0:
+                self.tank_image_sprite = 1
+            else:
+                self.tank_image_sprite = 0
+
+            self.is_moving = True
         else:
-            self.tank_image_sprite = 0
+            self.collision_sound.play()
 
         self.adjust_cannon_position()
 
     def aim_cannon(self, mouse_position: tuple):
+
+        angle = self.cannon_angle
+
         # Cannon centerx rotation
         centerx = self.cannon_position[0] + self.cannon_image.get_width() // 2
         # Cannon centery rotation
@@ -95,6 +116,11 @@ class Player(object):
             elif self.cannon_angle > 135:
                 self.cannon_angle = 135
 
+        if angle == self.cannon_angle:
+            self.is_aiming = False
+        else:
+            self.is_aiming = True
+
     def rotate_cannon(self):
         self.cannon_image = pygame.transform.rotate(self.default_cannon_image, self.cannon_angle)
         self.adjust_cannon_position()
@@ -103,6 +129,32 @@ class Player(object):
         self.display_width = display.get_width()
 
         self.rotate_cannon()
+
+        if self.is_moving:
+            self.move_sound.play()
+            self.is_moving = False
+        else:
+            self.move_sound.stop()
+
+        if self.is_collision:
+            self.collision_sound.play()
+            self.is_collision = False
+        else:
+            self.collision_sound.stop()
+
+        if self.ai is not None:
+            if self.ai.is_aiming():
+                self.cannon_aim_sound.play()
+                self.ai.set_aiming(False)
+            else:
+                self.cannon_aim_sound.stop()
+        else:
+            if self.is_aiming:
+                self.cannon_aim_sound.play()
+                self.is_aiming = False
+            else:
+                self.cannon_aim_sound.stop()
+
         if self.damage:
             self.damage_animation(display)
         else:
@@ -152,8 +204,8 @@ class Player(object):
         if self.life < 0:
             self.life = 0
 
-    def ai_moving(self, players: list, timer: Timer, config: Config):
-        return self.ai.run(self, players, timer, config)
+    def ai_moving(self, players: list, timer: Timer):
+        return self.ai.run(self, players, timer, self.config)
 
     # Getters
     # Setters
