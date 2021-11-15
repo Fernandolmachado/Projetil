@@ -37,7 +37,7 @@ class App(object):
         config = Config()
 
         # teste
-        config.scene = 1
+        config.scene = 0
 
         # execucao do jogo
         while config.running:

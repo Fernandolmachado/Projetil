@@ -129,6 +129,7 @@ class Game(Scene):
         if not self.shooting and self.players_row.length() == 0:
             if not self.end_game:
                 self.turn_sound.stop()
+                self.music.stop()
                 self.end_game = True
                 self.end_sound.play()
             player_color = self.get_player_color()

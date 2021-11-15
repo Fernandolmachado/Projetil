@@ -90,6 +90,9 @@ class PlayerMenu(Scene):
         self.cursor_sound = Sound(config.sounds["cursor"])
         self.select_sound = Sound(config.sounds["select"])
 
+        if not pygame.mixer.get_busy():
+            self.config.menu_music.play()
+
         for i in range(len(self.players_buttons)):
             player_button = self.players_buttons[i]
             player_button.set_hover_sound(Sound(config.sounds["cursor"]))
